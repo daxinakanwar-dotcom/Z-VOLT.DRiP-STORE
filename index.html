@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z-VOLT DRiP STORE</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #111111;
+            border-bottom: 3px solid #ff6600;
+        }
+        header h1 {
+            color: #ff6600;
+            margin: 0;
+            font-size: 32px;
+            letter-spacing: 2px;
+        }
+        .intro-text {
+            max-width: 700px;
+            margin: 30px auto;
+            text-align: center;
+            padding: 0 20px;
+        }
+        .intro-text h2 {
+            color: #ffffff;
+            font-size: 24px;
+        }
+        .intro-text p {
+            color: #cccccc;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Rectangular Product Card */
+        .product-card {
+            border: 2px solid #333333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 450px;
+            background: #121212;
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(255, 102, 0, 0.2);
+            margin-bottom: 30px;
+        }
+        .image-slider {
+            position: relative;
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            border-radius: 6px;
+            background: #000;
+        }
+        .slide-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: #ff6600;
+            border: none;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+
+        .product-card h2 {
+            margin: 15px 0 5px;
+            color: #ffffff;
+        }
+        .price {
+            color: #ff6600;
+            font-weight: bold;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        .options {
+            margin: 10px 0;
+            font-size: 15px;
+            color: #dddddd;
+        }
+        .options span {
+            display: inline-block;
+            background: #222;
+            padding: 5px 10px;
+            margin: 3px;
+            border-radius: 4px;
+            border: 1px solid #ff6600;
+        }
+        .desc {
+            font-size: 14px;
+            color: #aaaaaa;
+            margin-bottom: 15px;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        /* Size Chart & Warning */
+        .extra-info-section {
+            width: 90%;
+            max-width: 450px;
+            background: #181818;
+            border: 1px solid #444;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .extra-info-section h3 {
+            color: #ff6600;
+            margin-top: 0;
+        }
+        .extra-info-section img {
+            width: 100%;
+            border-radius: 6px;
+            border: 1px solid #ff6600;
+            margin-top: 10px;
+        }
+        .warning-box {
+            background: #2b1100;
+            border-left: 4px solid #ff6600;
+            padding: 10px;
+            margin-top: 15px;
+            text-align: left;
+            font-size: 13px;
+            color: #ffccaa;
+        }
+
+        /* Checkout Section */
+        .checkout-section {
+            width: 90%;
+            max-width: 450px;
+            background: #121212;
+            border: 2px solid #ff6600;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        .checkout-section h3 {
+            color: #ff6600;
+            text-align: center;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #ccc;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            background: #222;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .qr-box {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .qr-box img {
+            width: 200px;
+            height: 200px;
+            border-radius: 6px;
+            border: 2px solid #ff6600;
+            background: #fff;
+        }
+        .submit-btn {
+            background: #ff6600;
+            color: #000;
+            border: none;
+            padding: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+            text-transform: uppercase;
+        }
+        .submit-btn:hover {
+            background: #ff8833;
+        }
+
+        /* Success Green Tick Animation Screen */
+        #success-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .green-tick-circle {
+            width: 100px;
+            height: 100px;
+            background-color: #28a745;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px auto;
+            box-shadow: 0 0 20px rgba(40, 167, 69, 0.5);
+        }
+        .green-tick-circle span {
+            color: white;
+            font-size: 60px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Z-VOLT DRiP STORE</h1>
+        <p style="color: #ccc; margin: 5px 0 0;">Exclusive Streetwear Collection</p>
+    </header>
+
+    <!-- Introduction Section -->
+    <div class="intro-text">
+        <h2>Welcome to the Future of Streetwear</h2>
+        <p>Level up your style with Z-Volt Drip Store. Premium quality fits designed for those who stand out from the crowd. Check out our latest drop below!</p>
+    </div>
+
+    <div class="main-container">
+
+        <!-- Product Card -->
+        <div class="product-card">
+            <div class="image-slider">
+                <img src="IMG_20260904_152637.png" alt="Shock 1 Front" class="slide-img" style="display: block;">
+                <img src="IMG_20260904_152818.png" alt="Shock 1 Back" class="slide-img" style="display: none;">
+                
+                <button class="slider-btn prev-btn" onclick="prevSlide(this)">❮</button>
+                <button class="slider-btn next-btn" onclick="nextSlide(this)">❯</button>
+            </div>
+            
+            <h2>Shock 1</h2>
+            <div class="price">₹599</div>
+            
+            <div class="options">
+                <span>Color: Black & White</span>
+            </div>
+            
+            <div class="desc">
+                <strong>Description:</strong> Premium heavy-blend streetwear piece engineered for ultimate comfort and bold aesthetics. 
+            </div>
+        </div>
+
+        <!-- Size Chart & Warning Section -->
+        <div class="extra-info-section">
+            <h3>Size Chart</h3>
+            <p style="font-size: 13px; color: #aaa; margin: 5px 0;">Find your exact fit before placing the order:</p>
+            <img src="Screenshot_2026_0902_195351.png" alt="Size Chart">
+
+            <div class="warning-box">
+                <strong>⚠️ Important Note / Warning:</strong>
+                <p style="margin: 5px 0 0;">Please verify your size and shipping details carefully before payment. Orders once placed cannot be cancelled or exchanged.</p>
+            </div>
+        </div>
+
+        <!-- Checkout Section -->
+        <div class="checkout-section" id="form-container">
+            <h3>Checkout & Payment</h3>
+            <!-- फॉर्मस्प्री के जरिए सीधे आपकी जीमेल पर आर्डर मेल भेजने का सेटअप -->
+            <form id="orderForm" action="https://formspree.io/f/xlgraonq" method="POST" onsubmit="handleOrder(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label>Gmail ID</label>
+                    <input type="email" name="email" placeholder="JkBusiness629@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" name="phone" placeholder="Enter your mobile number" required>
+                </div>
+                <div class="form-group">
+                    <label>Shipping Address</label>
+                    <textarea name="address" rows="3" placeholder="Enter full address with pincode" required></textarea>
+                </div>
+                <input type="hidden" name="product" value="Shock 1 - ₹599">
+
+                <div class="qr-box">
+                    <p style="color: #ff6600; font-weight: bold; margin-bottom: 8px;">Scan QR Code to Pay ₹599</p>
+                    <img src="Screenshot_2026_0904_152258.jpg" alt="Payment QR Code">
+                </div>
+
+                <button type="submit" class="submit-btn">Place Order</button>
+            </form>
+            <p style="text-align: center; font-size: 12px; color: #777; margin-top: 15px;">
+                Support Email: <a href="mailto:JkBusiness629@gmail.com" style="color: #ff6600;">JkBusiness629@gmail.com</a>
+            </p>
+        </div>
+
+        <!-- Success Screen with Green Tick -->
+        <div id="success-screen" class="checkout-section">
+            <div class="green-tick-circle">
+                <span>✓</span>
+            </div>
+            <h2 style="color: #28a745; margin-bottom: 10px;">Order Placed Successfully!</h2>
+            <p style="color: #ccc; font-size: 15px; line-height: 1.5;">Thank you for shopping with Z-Volt Drip Store. We have received your order details and payment intimation. A notification has been sent to our team!</p>
+            <button onclick="resetForm()" style="background: #ff6600; color: #000; border: none; padding: 10px 20px; font-weight: bold; border-radius: 4px; margin-top: 20px; cursor: pointer;">Place Another Order</button>
+        </div>
+
+    </div>
+
+    <!-- Scripts for Slider and Order Success Animation -->
+    <script>
+        function nextSlide(button) {
+            let slider = button.parentElement;
+            let imgs = slider.getElementsByClassName('slide-img');
+            if(imgs[0].style.display !== 'none') {
+                imgs[0].style.display = 'none';
+                imgs[1].style.display = 'block';
+            } else {
+                imgs[1].style.display = 'none';
+                imgs[0].style.display = 'block';
+            }
+        }
+        function prevSlide(button) {
+            nextSlide(button);
+        }
+
+        // Handle Form Submission & Green Tick Display
+        async function handleOrder(event) {
+            event.preventDefault(); // पेज रिफ्रेश होने से रोकें
+            let form = document.getElementById('orderForm');
+            let formData = new FormData(form);
+
+            try {
+                let response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'json' }
+                });
+
+                if (response.ok) {
+                    // फॉर्म छिपाएं और ग्रीन टिक वाला सक्सेस स्क्रीन दिखाएं
+                    document.getElementById('form-container').style.display = 'none';
+                    document.getElementById('success-screen').style.display = 'block';
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
+            } catch (error) {
+                alert('Network error. Please check your connection.');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('orderForm').reset();
+            document.getElementById('success-screen').style.display = 'none';
+            document.getElementById('form-container').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
