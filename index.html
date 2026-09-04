@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z-VOLT DRiP STORE</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0b0b0b;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 30px;
+            background-color: #151515;
+            border-bottom: 2px solid #ff9900;
+        }
+        header h1 {
+            color: #ff9900;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        /* Product Card & Slider Style */
+        .product-card {
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 8px;
+            width: 280px;
+            background: #161616;
+            color: #fff;
+            text-align: center;
+            margin: 15px;
+            box-shadow: 0 4px 10px rgba(255, 153, 0, 0.1);
+        }
+        .image-slider {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 6px;
+            background: #000;
+        }
+        .slide-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        .prev-btn { left: 8px; }
+        .next-btn { right: 8px; }
+
+        .product-card h3 {
+            margin: 12px 0 5px;
+            font-size: 18px;
+        }
+        .price {
+            color: #ff9900;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .buy-btn {
+            background: #ff9900;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            width: 100%;
+        }
+        /* Size Chart & Info Section */
+        .info-section {
+            text-align: center;
+            padding: 30px;
+            background-color: #111;
+            margin-top: 20px;
+            border-top: 1px solid #333;
+        }
+        .info-section img {
+            width: 250px;
+            max-width: 100%;
+            border-radius: 8px;
+            border: 2px solid #ff9900;
+            margin-top: 10px;
+        }
+        .info-section a {
+            color: #ff9900;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Z-VOLT DRiP STORE</h1>
+        <p>Your Ultimate Streetwear Destination</p>
+    </header>
+
+    <!-- Product Section -->
+    <div class="container">
+        <div class="product-card">
+            <div class="image-slider">
+                <!-- प्रोडक्ट की पहली फोटो -->
+                <img src="IMG_20260904_152637.png" alt="Product Front" class="slide-img" style="display: block;">
+                <!-- प्रोडक्ट की दूसरी फोटो -->
+                <img src="IMG_20260904_152818.png" alt="Product Back" class="slide-img" style="display: none;">
+                
+                <button class="slider-btn prev-btn" onclick="prevSlide(this)">❮</button>
+                <button class="slider-btn next-btn" onclick="nextSlide(this)">❯</button>
+            </div>
+            <h3>Cyberpunk Oversized Hoodie</h3>
+            <div class="price">₹1,999</div>
+            <button class="buy-btn">Add to Cart</button>
+        </div>
+    </div>
+
+    <!-- Size Chart Section -->
+    <div class="info-section">
+        <h3>Size Chart</h3>
+        <p>Check your perfect fit before ordering</p>
+        <img src="Screenshot_2026_0902_195351.png" alt="Size Chart">
+    </div>
+
+    <!-- Payment & Contact Section -->
+    <div class="info-section">
+        <h3>Scan & Pay</h3>
+        <p>Scan this QR code to complete your payment</p>
+        <img src="Screenshot_2026_0904_152258.jpg" alt="Payment QR Code">
+
+        <h3 style="margin-top: 30px;">Contact Us</h3>
+        <p>For any queries, reach out via email:</p>
+        <p>📧 <a href="mailto:JkBusiness629@gmail.com">JkBusiness629@gmail.com</a></p>
+    </div>
+
+    <!-- Slider Script -->
+    <script>
+        function nextSlide(button) {
+            let slider = button.parentElement;
+            let imgs = slider.getElementsByClassName('slide-img');
+            if(imgs[0].style.display !== 'none') {
+                imgs[0].style.display = 'none';
+                imgs[1].style.display = 'block';
+            } else {
+                imgs[1].style.display = 'none';
+                imgs[0].style.display = 'block';
+            }
+        }
+        function prevSlide(button) {
+            nextSlide(button);
+        }
+    </script>
+
+</body>
+</html>
