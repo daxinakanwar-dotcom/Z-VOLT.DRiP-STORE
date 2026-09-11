@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z-VOLT DRIP STORE | Legendary Archive</title>
+    
+    <!-- Ultra-High-End Luxury Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Cabinet+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #030305;
+            --surface-glass: rgba(18, 18, 24, 0.75);
+            --border-glass: rgba(243, 229, 171, 0.12);
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1b5;
+            --accent-gold: #f3e5ab;
+            --accent-silver: #e2e2e9;
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+        }
+
+        /* ---------------- LEGENDARY ANIMATED BACKGROUND AMBIENCE ---------------- */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: -2;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 20%, #0d0b14 0%, #030305 70%);
+        }
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.35;
+            animation: floatOrb 12s ease-in-out infinite alternate;
+        }
+        .orb-1 {
+            width: 45vw; height: 45vw;
+            background: rgba(243, 229, 171, 0.15);
+            top: -10%; left: -10%;
+        }
+        .orb-2 {
+            width: 50vw; height: 50vw;
+            background: rgba(120, 80, 200, 0.12);
+            bottom: -20%; right: -10%;
+            animation-delay: -4s;
+        }
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(40px, 50px) scale(1.1); }
+        }
+
+        /* ---------------- 1. AUTH SCREEN ---------------- */
+        #auth-screen {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(3, 3, 5, 0.95);
+            backdrop-filter: blur(40px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.6s ease;
+        }
+        .auth-box {
+            text-align: center;
+            padding: 55px 40px;
+            background: var(--surface-glass);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(25px);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+            border-radius: 26px;
+            width: 90%;
+            max-width: 420px;
+            animation: scaleUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes scaleUp {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .auth-box h1 {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 26px;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+        }
+        .auth-input {
+            width: 100%;
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--border-glass);
+            color: white;
+            font-size: 14px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            outline: none;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: var(--transition-smooth);
+        }
+        .auth-input:focus { border-color: var(--accent-gold); box-shadow: 0 0 20px rgba(243,229,171,0.2); background: rgba(0,0,0,0.9); }
+        .enter-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #f3e5ab, #d4af37);
+            color: #000;
+            border: none;
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            border-radius: 12px;
+            letter-spacing: 1.5px;
+            transition: var(--transition-smooth);
+        }
+        .enter-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(243,229,171,0.3); }
+
+        /* ---------------- 2. MAIN STORE ---------------- */
+        #main-store {
+            display: none;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* MARQUEE */
+        .marquee-container {
+            width: 100%;
+            background: rgba(10, 8, 16, 0.9);
+            border-bottom: 1px solid var(--border-glass);
+            color: var(--accent-gold);
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 11px;
+            letter-spacing: 3px;
+            position: fixed;
+            top: 0;
+            z-index: 9990;
+            backdrop-filter: blur(10px);
+        }
+        .marquee-text {
+            display: inline-block;
+            animation: scrollMarquee 35s linear infinite;
+        }
+        @keyframes scrollMarquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(3, 3, 5, 0.8);
+            border-bottom: 1px solid var(--border-glass);
+            position: sticky;
+            top: 35px;
+            z-index: 990;
+            backdrop-filter: blur(25px);
+            margin-top: 35px;
+        }
+        header h1 {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            color: var(--text-primary);
+            font-size: 22px;
+            letter-spacing: 2px;
+            margin: 0;
+            cursor: pointer;
+        }
+        header h1 span { color: var(--accent-gold); text-shadow: 0 0 15px rgba(243,229,171,0.4); }
+        .header-right-group { display: flex; gap: 15px; align-items: center; }
+        .user-badge-pill {
+            background: rgba(243,229,171,0.06);
+            border: 1px solid var(--border-glass);
+            padding: 7px 16px; border-radius: 20px; font-size: 11px; color: var(--accent-gold);
+            font-weight: 600;
+        }
+        .cart-trigger {
+            background: var(--surface-glass);
+            color: var(--text-primary);
+            border: 1px solid var(--border-glass);
+            padding: 9px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            transition: var(--transition-smooth);
+            backdrop-filter: blur(15px);
+        }
+        .cart-trigger:hover { border-color: var(--accent-gold); color: var(--accent-gold); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(243,229,171,0.15); }
+
+        /* HERO BANNER (IMG_20260904_152818.png) */
+        .hero {
+            height: 52vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(3,3,5,0.3), rgba(3,3,5,0.95)), url('IMG_20260904_152818.png');
+            background-size: cover;
+            background-position: center;
+            border-bottom: 1px solid var(--border-glass);
+            position: relative;
+        }
+        .hero h2 {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 6vw;
+            margin: 0;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 40px rgba(243,229,171,0.3);
+            animation: floatHero 5s ease-in-out infinite alternate;
+        }
+        @keyframes floatHero {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-6px); }
+        }
+        .hero-tag { font-size: 11px; letter-spacing: 6px; color: var(--text-secondary); text-transform: uppercase; margin-top: 12px; font-weight: 700; }
+
+        /* PRODUCT SECTION */
+        .section-header {
+            max-width: 1200px;
+            margin: 55px auto 20px;
+            padding: 0 30px;
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 16px;
+            letter-spacing: 2px;
+            color: var(--accent-gold);
+        }
+
+        .products-wrapper {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 30px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .product-card {
+            width: 100%;
+            max-width: 370px;
+            background: var(--surface-glass);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(25px);
+            border-radius: 22px;
+            padding: 24px;
+            transition: var(--transition-smooth);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .product-card::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(243,229,171,0.06), transparent);
+            transition: 0.6s;
+        }
+        .product-card:hover::before { left: 100%; }
+        .product-card:hover {
+            border-color: rgba(243,229,171,0.5);
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 35px 70px rgba(0,0,0,0.8), 0 0 30px rgba(243,229,171,0.15);
+        }
+        .product-img-box {
+            width: 100%;
+            height: 390px;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .product-img {
+            width: 100%; height: 100%; object-fit: cover; transition: var(--transition-smooth);
+        }
+        .product-card:hover .product-img { transform: scale(1.07); }
+        
+        .product-title {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 19px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px;
+        }
+        .product-price { color: var(--accent-gold); font-size: 17px; margin-bottom: 16px; font-weight: 800; }
+
+        /* SIZES */
+        .size-label { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1.5px; font-weight: 700; }
+        .size-options {
+            display: flex; gap: 8px; margin-bottom: 16px;
+        }
+        .size-box {
+            flex: 1; padding: 10px 0; text-align: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass);
+            border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: var(--transition-smooth);
+        }
+        .size-box:hover { background: rgba(243,229,171,0.1); border-color: var(--accent-gold); }
+        .size-box.selected { background: var(--accent-gold); color: #000; border-color: var(--accent-gold); box-shadow: 0 0 15px rgba(243,229,171,0.5); }
+
+        /* SIZE CHART (Screenshot_2026_0902_195351.png) */
+        .size-chart-btn {
+            width: 100%; background: transparent; color: var(--text-secondary); border: 1px solid var(--border-glass);
+            padding: 11px; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; cursor: pointer;
+            border-radius: 9px; margin-bottom: 16px; transition: var(--transition-smooth); font-weight: 700;
+        }
+        .size-chart-btn:hover { color: #fff; border-color: var(--accent-gold); background: rgba(243,229,171,0.05); }
+        
+        .size-chart-dropdown {
+            max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1); margin-bottom: 10px;
+        }
+        .size-chart-dropdown.active { max-height: 400px; }
+        .size-chart-img { width: 100%; border-radius: 10px; background: #fff; border: 1px solid var(--border-glass); }
+
+        .add-cart-btn {
+            width: 100%; padding: 15px; background: linear-gradient(135deg, #f3e5ab, #d4af37); color: #000; border: none;
+            font-family: 'Cabinet Grotesk', sans-serif; font-size: 12px; font-weight: 800;
+            cursor: pointer; border-radius: 10px; transition: var(--transition-smooth); text-transform: uppercase; letter-spacing: 1px;
+        }
+        .add-cart-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(243,229,171,0.4); }
+
+        /* PRODUCT DETAIL MODAL */
+        #detail-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(3,3,5,0.9);
+            z-index: 9995;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .detail-box {
+            width: 100%; max-width: 880px; max-height: 90vh;
+            background: #0d0b12; border: 1px solid var(--border-glass);
+            border-radius: 26px; padding: 45px; box-sizing: border-box;
+            overflow-y: auto; position: relative;
+            display: flex; flex-wrap: wrap; gap: 40px;
+            box-shadow: 0 0 80px rgba(243,229,171,0.2);
+            scrollbar-width: none;
+        }
+        .detail-box::-webkit-scrollbar { display: none; }
+        .close-detail {
+            position: absolute; top: 20px; right: 25px; background: none; border: none;
+            color: #fff; font-size: 26px; cursor: pointer; transition: 0.2s;
+        }
+        .close-detail:hover { color: var(--accent-gold); transform: scale(1.1); }
+        .detail-img-pane { flex: 1; min-width: 280px; height: 430px; border-radius: 18px; overflow: hidden; background: #000; }
+        .detail-img-pane img { width: 100%; height: 100%; object-fit: cover; }
+        .detail-content-pane { flex: 1.2; min-width: 280px; display: flex; flex-direction: column; justify-content: center; }
+        .detail-content-pane h2 { font-family: 'Cabinet Grotesk', sans-serif; font-size: 26px; margin: 0 0 10px 0; text-transform: uppercase; }
+        .detail-content-pane .price { font-size: 19px; font-weight: 800; color: var(--accent-gold); margin-bottom: 20px; }
+        .pro-description { font-size: 13px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 25px; }
+        .pro-specs { list-style: none; padding: 0; margin: 0 0 25px 0; font-size: 12px; color: #dcdce6; }
+        .pro-specs li { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .pro-specs li::before { content: "✦"; color: var(--accent-gold); font-size: 11px; }
+
+        /* CART DRAWER */
+        #cart-modal {
+            display: none;
+            position: fixed;
+            top: 0; right: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(3,3,5,0.85);
+            z-index: 9999;
+            justify-content: flex-end;
+            backdrop-filter: blur(15px);
+        }
+        .cart-drawer {
+            width: 100%; max-width: 420px; height: 100%;
+            background: #0d0b12;
+            border-left: 1px solid var(--border-glass);
+            padding: 35px; box-sizing: border-box;
+            display: flex; flex-direction: column;
+            box-shadow: -40px 0 80px rgba(0,0,0,0.95);
+        }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 18px; }
+        .cart-header h3 { font-family: 'Cabinet Grotesk', sans-serif; font-size: 16px; margin: 0; letter-spacing: 1px; color: var(--accent-gold); }
+        .close-cart { background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; transition: 0.2s; }
+        .close-cart:hover { color: var(--accent-gold); transform: scale(1.1); }
+        
+        .cart-items-list { flex: 1; overflow-y: auto; padding: 20px 0; scrollbar-width: none; }
+        .cart-items-list::-webkit-scrollbar { display: none; }
+        
+        .cart-item-row {
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); padding: 14px; border-radius: 12px; margin-bottom: 12px;
+        }
+        .cart-item-info h4 { font-size: 14px; margin: 0 0 4px 0; font-weight: 700; }
+        .cart-item-info p { font-size: 12px; color: var(--text-secondary); margin: 0; }
+        .cart-item-price { font-weight: 800; font-size: 14px; color: var(--accent-gold); }
+
+        .checkout-trigger-btn {
+            width: 100%; padding: 16px; background: linear-gradient(135deg, #f3e5ab, #d4af37); color: #000; border: none;
+            font-family: 'Cabinet Grotesk', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 1px;
+            cursor: pointer; border-radius: 10px; text-transform: uppercase; margin-top: 12px; transition: var(--transition-smooth);
+            box-shadow: 0 0 20px rgba(243,229,171,0.3);
+        }
+        .checkout-trigger-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 0 30px rgba(243,229,171,0.6); }
+
+        /* CHECKOUT & FORMSPREE FORM + QR TUNNEL */
+        .checkout-container {
+            max-width: 580px;
+            margin: 40px auto 80px;
+            padding: 45px;
+            background: var(--surface-glass);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(30px);
+            border-radius: 24px;
+            display: none;
+            box-shadow: 0 35px 70px rgba(0,0,0,0.8);
+        }
+        .checkout-container h2 {
+            font-family: 'Cabinet Grotesk', sans-serif;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            color: var(--accent-gold);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 11px; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px; font-weight: 700; }
+        input, textarea {
+            width: 100%; padding: 15px 18px; background: rgba(0,0,0,0.6); border: 1px solid var(--border-glass);
+            color: #fff; border-radius: 12px; font-family: 'Plus Jakarta Sans', sans-serif; box-sizing: border-box; outline: none; font-size: 14px;
+            transition: var(--transition-smooth);
+        }
+        input:focus, textarea:focus { border-color: var(--accent-gold); background: rgba(0,0,0,0.9); box-shadow: 0 0 15px rgba(243,229,171,0.2); }
+
+        /* UPI QR CODE PAYMENT TUNNEL */
+        .qr-tunnel-box {
+            background: rgba(243, 229, 171, 0.04);
+            border: 1px dashed var(--accent-gold);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .qr-tunnel-box h4 { font-family: 'Cabinet Grotesk', sans-serif; color: var(--accent-gold); margin: 0 0 10px 0; font-size: 14px; letter-spacing: 1px; }
+                .qr-tunnel-box p { font-size: 12px; color: var(--text-secondary); margin: 0 0 15px 0; }
+        .qr-placeholder-img {
+            width: 180px; height: 180px; background: #fff; border-radius: 10px; margin: 0 auto 15px; padding: 10px;
+            display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; font-size: 12px;
+            border: 2px solid var(--accent-gold); box-sizing: border-box;
+        }
+        .qr-placeholder-img img { width: 100%; height: 100%; object-fit: contain; }
+
+        .rules-warning-box {
+            background: rgba(243,229,171,0.05); border-left: 2px solid var(--accent-gold);
+            padding: 14px; font-size: 12px; color: var(--text-secondary); margin-bottom: 25px; line-height: 1.5; border-radius: 0 10px 10px 0;
+        }
+
+        .pay-btn {
+            width: 100%; padding: 18px; background: linear-gradient(135deg, #f3e5ab, #d4af37); color: #000; border: none;
+            font-family: 'Cabinet Grotesk', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: 1px;
+            cursor: pointer; border-radius: 12px; text-transform: uppercase; transition: var(--transition-smooth);
+            box-shadow: 0 0 25px rgba(243,229,171,0.4);
+        }
+        .pay-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 0 35px rgba(243,229,171,0.7); }
+
+        /* CUSTOMER SERVICE DESK */
+        .customer-service-section {
+            max-width: 580px;
+            margin: 20px auto 80px;
+            padding: 30px;
+            background: var(--surface-glass);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            text-align: center;
+        }
+        .customer-service-section h3 { font-family: 'Cabinet Grotesk', sans-serif; font-size: 13px; margin-bottom: 8px; letter-spacing: 1px; color: var(--accent-gold); }
+        .customer-service-section p { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+        .support-email { color: #fff; font-weight: 700; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <!-- AMBIENT BACKGROUND GLOW ORBS -->
+    <div class="ambient-bg">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <!-- 1. AUTH SCREEN -->
+    <div id="auth-screen">
+        <div class="auth-box">
+            <h1>Z-VOLT ARCHIVE</h1>
+            <input type="text" id="username-input" class="auth-input" placeholder="Enter your codename" required>
+            <button class="enter-btn" onclick="handleAuth()">Enter Archive</button>
+        </div>
+    </div>
+
+    <!-- 2. MAIN STORE -->
+    <div id="main-store">
+        <!-- MARQUEE -->
+        <div class="marquee-container">
+            <div class="marquee-text">
+                ✦ EXCLUSIVE DROP • STRICT NO EXCHANGE / NO RETURN • ONLY PREPAID AVAILABLE • SUPPORT: JkBusiness629@gmail.com ✦
+            </div>
+        </div>
+
+        <!-- HEADER -->
+        <header>
+            <h1 onclick="window.scrollTo({top:0, behavior:'smooth'})">Z-VOLT <span>DRIP</span></h1>
+            <div class="header-right-group">
+                <div class="user-badge-pill" id="user-pill">Agent</div>
+                <button class="cart-trigger" onclick="openCart()">Bag (<span id="cart-counter">0</span>)</button>
+            </div>
+        </header>
+
+        <!-- HERO (IMG_20260904_152818.png) -->
+        <div class="hero">
+            <h2>LEGACY TEE</h2>
+            <div class="hero-tag">180 GSM Heavy-Blend Combed Cotton</div>
+        </div>
+
+        <!-- PRODUCT SECTION -->
+        <div class="section-header">THE SIGNATURE DROP</div>
+        
+        <div class="products-wrapper">
+            <!-- SINGLE PRODUCT (LEGACY TEE - 180 GSM + IMG_20260904_152637.png) -->
+            <div class="product-card" onclick="openProductDetail('Legacy Tee', 599, 'IMG_20260904_152637.png', 'Engineered with pristine 180 GSM combed cotton. The Legacy Tee brings unmatched breathability and a clean, luxury boxy silhouette designed for everyday street dominance.')">
+                <div class="product-img-box">
+                    <img class="product-img" src="IMG_20260904_152637.png" alt="Legacy Tee">
+                </div>
+                <div class="product-title">Legacy Tee</div>
+                <div class="product-price">₹ 599.00</div>
+                
+                <span class="size-label">Select Size</span>
+                <div class="size-options" onclick="event.stopPropagation()">
+                    <div class="size-box" onclick="selectSize(this, 'S')">S</div>
+                    <div class="size-box" onclick="selectSize(this, 'M')">M</div>
+                    <div class="size-box selected" onclick="selectSize(this, 'L')">L</div>
+                    <div class="size-box" onclick="selectSize(this, 'XL')">XL</div>
+                    <div class="size-box" onclick="selectSize(this, 'XXL')">XXL</div>
+                </div>
+
+                <button class="size-chart-btn" onclick="event.stopPropagation(); toggleSizeChart('chart-1')">View Size Guide 📐</button>
+                <div class="size-chart-dropdown" id="chart-1" onclick="event.stopPropagation()">
+                    <img src="Screenshot_2026_0902_195351.png" alt="Size Chart" class="size-chart-img">
+                </div>
+
+                <button class="add-cart-btn" onclick="event.stopPropagation(); addToCart('Legacy Tee', 599)">Add To Bag</button>
+            </div>
+        </div>
+
+        <!-- 3. PRODUCT DETAIL MODAL -->
+        <div id="detail-modal" onclick="closeProductDetail()">
+            <div class="detail-box" onclick="event.stopPropagation()">
+                <button class="close-detail" onclick="closeProductDetail()">&times;</button>
+                <div class="detail-img-pane">
+                    <img id="detail-modal-img" src="" alt="Product Detail">
+                </div>
+                <div class="detail-content-pane">
+                    <h2 id="detail-modal-title">Legacy Tee</h2>
+                    <div class="price" id="detail-modal-price">₹ 599.00</div>
+                    <p class="pro-description" id="detail-modal-desc">
+                        Crafted from premium 180 GSM combed cotton, offering an exceptionally soft hand-feel combined with durable streetwear structure. Features a refined tailored fit, reinforced ribbed neckline, and subtle luxury branding. Designed for everyday comfort and high-end street aesthetics.
+                    </p>
+                    <ul class="pro-specs">
+                        <li>100% Premium Combed Cotton (180 GSM)</li>
+                        <li>Soft-washed anti-shrink fabric finish</li>
+                        <li>Modern boxy luxury silhouette</li>
+                        <li>Exclusively crafted archival piece</li>
+                    </ul>
+                    <button class="add-cart-btn" onclick="addModalToBag()">Add To Bag Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. CART DRAWER -->
+        <div id="cart-modal">
+            <div class="cart-drawer">
+                <div class="cart-header">
+                    <h3>YOUR BAG (<span id="drawer-count">0</span>)</h3>
+                    <button class="close-cart" onclick="closeCart()">&times;</button>
+                </div>
+                <div class="cart-items-list" id="cart-items-container">
+                    <p style="color: var(--text-secondary); text-align: center; margin-top: 50px; font-size: 13px;">Your bag is empty.</p>
+                </div>
+                <div id="cart-footer" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 18px; font-size: 15px;">
+                        <span>Subtotal:</span>
+                        <span id="cart-total-price" style="color: var(--accent-gold);">₹ 0</span>
+                    </div>
+                    <button class="checkout-trigger-btn" onclick="proceedToCheckout()">Proceed to Secure Checkout</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. SECURE CHECKOUT & QR PAYMENT TUNNEL (FORMSPREE: https://formspree.io/f/mdeodbry) -->
+        <div class="checkout-container" id="checkout-section">
+            <h2>SECURE CHECKOUT & PAYMENT TUNNEL</h2>
+
+            <div class="rules-warning-box">
+                <strong>Policy Note:</strong> No exchange or return. Only defective pieces eligible. Monitored via <strong>JK Business</strong>.
+            </div>
+
+            <!-- FORMSPREE ACTION ENDPOINT -->
+            <form id="orderForm" action="https://formspree.io/f/mdeodbry" method="POST" enctype="multipart/form-data">
+                
+                <!-- Hidden input for order summary passed to Formspree -->
+                <input type="hidden" name="Order_Summary" id="form-order-summary" value="">
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="Name" id="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label>Gmail ID (For Tracking & Confirmation)</label>
+                    <input type="email" name="Email" id="email" placeholder="JkBusiness629@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" name="Phone" id="phone" placeholder="Enter mobile number" required>
+                </div>
+                <div class="form-group">
+                    <label>Complete Shipping Address (with Pincode)</label>
+                    <textarea name="Address" id="address" rows="3" placeholder="House no, Street, City, Pincode" required></textarea>
+                </div>
+
+                <!-- UPI QR CODE PAYMENT TUNNEL -->
+                <div class="qr-tunnel-box">
+                    <h4>SCAN & PAY ₹599</h4>
+                    <p>Scan this QR code using any UPI App (GPay, PhonePe, Paytm)</p>
+                    <div class="qr-placeholder-img">
+                        <img src="qr_code.png" alt="Scan UPI QR" onerror="this.style.display='none'; this.parentElement.innerHTML='<b>UPI QR CODE<br>Pay ₹599 to UPI</b>';">
+                    </div>
+                    <p style="font-size: 11px; color: var(--accent-gold); margin-bottom: 10px;">After payment, upload your payment success screenshot below:</p>
+                    <div class="form-group" style="text-align: left; margin-bottom: 0;">
+                        <label style="font-size: 10px;">Payment Screenshot / Ref ID</label>
+                        <input type="file" name="Payment_Screenshot" accept="image/*" required style="padding: 10px; font-size: 12px; background: #000;">
+                    </div>
+                </div>
+                
+                <button type="submit" id="submitOrderBtn" class="pay-btn">Submit Order & Confirm Payment</button>
+            </form>
+        </div>
+
+        <!-- 6. CUSTOMER SERVICE DESK -->
+        <div class="customer-service-section">
+            <h3>SUPPORT DESK</h3>
+            <p>Facing any issues with your delivery or order?</p>
+            <p>Email: <a href="mailto:JkBusiness629@gmail.com" class="support-email">JkBusiness629@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        let cart = [];
+        let selectedSize = 'L';
+        let currentModalProduct = { name: 'Legacy Tee', price: 599 };
+
+        function handleAuth() {
+            const name = document.getElementById('username-input').value.trim();
+            if(!name) { alert('Please enter your name.'); return; }
+            localStorage.setItem('zvolt_username', name);
+            activateStore(name);
+        }
+
+        function activateStore(name) {
+            const auth = document.getElementById('auth-screen');
+            auth.style.opacity = '0';
+            setTimeout(() => {
+                auth.style.display = 'none';
+                document.getElementById('main-store').style.display = 'block';
+                document.getElementById('user-pill').innerText = name;
+            }, 500);
+        }
+
+        window.onload = function() {
+            const savedName = localStorage.getItem('zvolt_username');
+            if(savedName) {
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('main-store').style.display = 'block';
+                document.getElementById('user-pill').innerText = savedName;
+            }
+        }
+
+        function selectSize(element, size) {
+            const siblings = element.parentNode.children;
+            for(let box of siblings) box.classList.remove('selected');
+            element.classList.add('selected');
+            selectedSize = size;
+        }
+
+        function toggleSizeChart(id) {
+            document.getElementById(id).classList.toggle('active');
+        }
+
+        function openProductDetail(name, price, img, desc) {
+            currentModalProduct = { name, price };
+            document.getElementById('detail-modal-title').innerText = name;
+            document.getElementById('detail-modal-price').innerText = '₹ ' + price + '.00';
+            document.getElementById('detail-modal-img').src = img;
+            document.getElementById('detail-modal-desc').innerText = desc;
+            document.getElementById('detail-modal').style.display = 'flex';
+        }
+
+        function closeProductDetail() {
+            document.getElementById('detail-modal').style.display = 'none';
+        }
+
+        function addModalToBag() {
+            addToCart(currentModalProduct.name, currentModalProduct.price);
+            closeProductDetail();
+        }
+
+        function addToCart(productName, price) {
+            cart.push({ name: productName, size: selectedSize, price: price });
+            updateCartUI();
+            
+            event.target.innerText = "ADDED ✓";
+            event.target.style.background = "#ffffff";
+            event.target.style.color = "#000";
+            setTimeout(() => {
+                event.target.innerText = "Add To Bag";
+                event.target.style.background = "";
+                event.target.style.color = "";
+            }, 1000);
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-counter').innerText = cart.length;
+            document.getElementById('drawer-count').innerText = cart.length;
+            
+            const container = document.getElementById('cart-items-container');
+            const footer = document.getElementById('cart-footer');
+            
+            if(cart.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; margin-top: 50px; font-size: 13px;">Your bag is empty.</p>';
+                footer.style.display = 'none';
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+            cart.forEach((item) => {
+                total += item.price;
+                html += `<div class="cart-item-row">
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <p>Size: <b>${item.size}</b></p>
+                    </div>
+                    <div class="cart-item-price">₹ ${item.price}</div>
+                </div>`;
+            });
+            container.innerHTML = html;
+            document.getElementById('cart-total-price').innerText = '₹ ' + total;
+            footer.style.display = 'block';
+
+            // Update hidden summary for Formspree
+            document.getElementById('form-order-summary').value = `Product: Legacy Tee | Size: ${selectedSize} | Total: ₹${total}`;
+        }
+
+        function openCart() { document.getElementById('cart-modal').style.display = 'flex'; }
+        function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+
+        function proceedToCheckout() {
+            if(cart.length === 0) { alert('Your bag is empty!'); return; }
+            closeCart();
+            document.getElementById('checkout-section').style.display = 'block';
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
